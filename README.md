@@ -2,127 +2,136 @@
 
 Common gulp tasks repository/generator
 
+### Dependencies
+
+You might want to install some of the following dependencies to unlock all the features:
+
+- `gulp-clean ^0.4.0` used in all built-in suites to generate clean* tasks.
+- `gulp-typescript ^6.0.0-alpha.1` used in built-in typescript suite to generate compileTypescript* tasks.
+- `gulp-sass ^5.1.0` and `sass ^1.49.8` used in built-in sass suite to generate compileSass* tasks
+
 ### Built-in
 
 This is an example gulpfile that uses the built-in tasks.
 
 ```typescript
 const gulp = require('gulp')
-const gulpcommons = require('gulpcommons')
+const {tasks} = require('gulpcommons')
 
 gulp.task('build', gulp.parallel(
     // main
-    gulpcommons.compileMainTypescript,
-    gulpcommons.bundleMainResources,
+    tasks.compileMainTypescript,
+    tasks.bundleMainResources,
     // test
-    gulpcommons.compileTestTypescript,
-    gulpcommons.bundleTestResources,
+    tasks.compileTestTypescript,
+    tasks.bundleTestResources,
     // client
-    gulpcommons.compileClientTypescript,
-    gulpcommons.compileClientSass,
-    gulpcommons.bundleClientStatic,
-    gulpcommons.bundleClientViews,
+    tasks.compileClientTypescript,
+    tasks.compileClientSass,
+    tasks.bundleClientStatic,
+    tasks.bundleClientViews,
     // config
-    gulpcommons.bundleConfigEnv
+    tasks.bundleConfigEnv
 ))
 gulp.task('clean', gulp.parallel(
     // main
-    gulpcommons.cleanMainTypescript,
-    gulpcommons.cleanMainResources,
+    tasks.cleanMainTypescript,
+    tasks.cleanMainResources,
     // test
-    gulpcommons.cleanTestTypescript,
-    gulpcommons.cleanTestResources,
+    tasks.cleanTestTypescript,
+    tasks.cleanTestResources,
     // client
-    gulpcommons.cleanClientTypescript,
-    gulpcommons.cleanClientSass,
-    gulpcommons.cleanClientStatic,
-    gulpcommons.cleanClientViews,
+    tasks.cleanClientTypescript,
+    tasks.cleanClientSass,
+    tasks.cleanClientStatic,
+    tasks.cleanClientViews,
     // config
-    gulpcommons.cleanConfigEnv,
+    tasks.cleanConfigEnv,
 ))
 gulp.task('watch', gulp.series('clean', 'build', gulp.parallel(
     // main
-    gulpcommons.watchMainTypescript,
-    gulpcommons.watchMainResources,
+    tasks.watchMainTypescript,
+    tasks.watchMainResources,
     // test
-    gulpcommons.watchTestTypescript,
-    gulpcommons.watchTestResources,
+    tasks.watchTestTypescript,
+    tasks.watchTestResources,
     // client
-    gulpcommons.watchClientTypescript,
-    gulpcommons.watchClientSass,
-    gulpcommons.watchClientStatic,
-    gulpcommons.watchClientViews,
+    tasks.watchClientTypescript,
+    tasks.watchClientSass,
+    tasks.watchClientStatic,
+    tasks.watchClientViews,
     // config
-    gulpcommons.watchConfigEnv,
+    tasks.watchConfigEnv,
 )))
 ```
 
 You could optionally tweak the built-in tasks as follows:
 
 ```typescript
-const gulpcommons = require('gulpcommons')
+const {sources} = require('gulpcommons')
 
-gulpcommons.sources.main.input = './src/main/typescript/**/*.ts'
-gulpcommons.sources.main.tsconfig = './src/main/typescript/tsconfig.json'
-gulpcommons.sources.main.output = './build/javascript/main'
+sources.main.input = './src/main/typescript/**/*.ts'
+sources.main.tsconfig = './src/main/typescript/tsconfig.json'
+sources.main.output = './build/javascript/main'
 ```
 
 Also, you could register all the tasks to gulp:
 
 ```typescript
-const gulpcommons = require('gulpcommons')
+const {tasks} = require('gulpcommons')
 
-gulpcommons.install()
+tasks.install()
 ```
 
 Also, you can dynamically generate your custom tasks as follows:
 
 ```typescript
-const gulpcommons = require('gulpcommons')
+const gulp = require('gulp')
+const {tasks, sources, generate, install} = require('gulpcommons')
 
 // first define the sources
-gulpcommons.sources.mySourceSet = {
+sources.mySourceSet = {
     myTypescript: {
-        type: gulpcommons.suites.typescript,
+        type: tasks.suites.typescript,
         input: './src/my-source-set/my-typescript/**/*.ts',
         output: './build/my-source-set/my-typescript',
         tsconfig: './src/my-source-set/my-typescript/tsconfig.json'
     },
     mySass: {
-        type: gulpcommons.suites.sass,
+        type: tasks.suites.sass,
         input: './src/my-source-set/my-sass/**/*.sass',
         output: './build/my-source-set/my-sass'
     },
     myBundle: {
-        type: gulpcommons.suites.bundle,
+        type: tasks.suites.bundle,
         input: './src/my-source-set/my-bundle/**/*.*',
         output: './build/my-source-set/my-bundle'
     }
 }
 
 // then generate the tasks
-gulpcommons.generate()
+generate()
 
-// optionally, register the tasks to gulp
-gulpcommons.install()
+// optional: register the tasks to gulp
+install()
 
 // finally add them to the build, clean and watch tasks
 gulp.task('build', gulp.parallel(
     /* ... */
-    gulpcommons.compileMySourceSetMyTypescript,
-    gulpcommons.compileMySourceSetMySass,
-    gulpcommons.bundleMySourceSetMyBundle,
+    tasks.compileMySourceSetMyTypescript,
+    tasks.compileMySourceSetMySass,
+    tasks.bundleMySourceSetMyBundle,
 ))
 gulp.task('clean', gulp.parallel(
     /* ... */
-    gulpcommons.cleanMySourceSetMyTypescript,
-    gulpcommons.cleanMySourceSetMySass,
-    gulpcommons.cleanMySourceSetMyBundle,
+    tasks.cleanMySourceSetMyTypescript,
+    tasks.cleanMySourceSetMySass,
+    tasks.cleanMySourceSetMyBundle,
 ))
 gulp.task('watch', gulp.series('clean', 'build', gulp.parallel(
     /* ... */
-    gulpcommons.watchMySourceSetMyTypescript,
-    gulpcommons.watchMySourceSetMySass,
-    gulpcommons.watchMySourceSetMyBundle,
+    tasks.watchMySourceSetMyTypescript,
+    tasks.watchMySourceSetMySass,
+    tasks.watchMySourceSetMyBundle,
 )))
 ```

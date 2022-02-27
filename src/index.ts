@@ -1,7 +1,4 @@
 const gulp = require('gulp')
-const gulpTypescript = require('gulp-typescript')
-const gulpSass = require('gulp-sass')(require('sass'))
-const gulpClean = require('gulp-clean')
 
 // Internal
 
@@ -30,8 +27,6 @@ export const tasks: Record<string, Task> = {}
 
 export const suites: Record<string, Suite> = {}
 
-export default tasks
-
 export function generate() {
     for (const [ssn, ss] of Object.entries(sources))
         for (const [sn, s] of Object.entries(ss))
@@ -47,6 +42,9 @@ export function install() {
 // Defaults
 
 suites.typescript = ([sourceSetName, sourceSet], [sourceName, source]) => {
+    const gulpTypescript = require('gulp-typescript')
+    const gulpClean = require('gulp-clean')
+
     const sourceSetDisplayName = sourceSetName[0].toUpperCase() + sourceSetName.substring(1)
     const sourceDisplayName = sourceName[0].toUpperCase() + sourceName.substring(1)
 
@@ -80,6 +78,9 @@ suites.typescript = ([sourceSetName, sourceSet], [sourceName, source]) => {
     ]
 }
 suites.sass = ([sourceSetName, sourceSet], [sourceName, source]) => {
+    const gulpSass = require('gulp-sass')(require('sass'))
+    const gulpClean = require('gulp-clean')
+
     const sourceSetDisplayName = sourceSetName[0].toUpperCase() + sourceSetName.substring(1)
     const sourceDisplayName = sourceName[0].toUpperCase() + sourceName.substring(1)
 
@@ -113,6 +114,8 @@ suites.sass = ([sourceSetName, sourceSet], [sourceName, source]) => {
     ]
 }
 suites.bundle = ([sourceSetName, sourceSet], [sourceName, source]) => {
+    const gulpClean = require('gulp-clean')
+
     const sourceSetDisplayName = sourceSetName[0].toUpperCase() + sourceSetName.substring(1)
     const sourceDisplayName = sourceName[0].toUpperCase() + sourceName.substring(1)
 
@@ -203,42 +206,3 @@ sources.config = {
 }
 
 generate()
-
-export const {
-    // Main Typescript
-    compileMainTypescript,
-    cleanMainTypescript,
-    watchMainTypescript,
-    // Main Resources
-    bundleMainResources,
-    cleanMainResources,
-    watchMainResources,
-    // Test Typescript
-    compileTestTypescript,
-    cleanTestTypescript,
-    watchTestTypescript,
-    // Test Resources
-    bundleTestResources,
-    cleanTestResources,
-    watchTestResources,
-    // client Typescript
-    compileClientTypescript,
-    cleanClientTypescript,
-    watchClientTypescript,
-    // Client Sass
-    compileClientSass,
-    cleanClientSass,
-    watchClientSass,
-    // Client Views
-    bundleClientViews,
-    cleanClientViews,
-    watchClientViews,
-    // Client Static
-    bundleClientStatic,
-    cleanClientStatic,
-    watchClientStatic,
-    // Config Env
-    bundleConfigEnv,
-    cleanConfigEnv,
-    watchConfigEnv
-} = tasks
