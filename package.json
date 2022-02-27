@@ -1,0 +1,30 @@
+{
+  "name": "gulpcommons",
+  "version": "0.0.6",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "LSafer",
+    "email": "lsafer@progspace.sa"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/progspacesa/gulpcommons"
+  },
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "clean": "npx rimraf build",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "sass": "^1.49.8"
+  },
+  "devDependencies": {
+    "@types/gulp": "^4.0.9",
+    "@types/node": "^17.0.19"
+  }
+}
