@@ -42,9 +42,6 @@ export function install() {
 // Defaults
 
 suites.typescript = ([sourceSetName, sourceSet], [sourceName, source]) => {
-    const gulpTypescript = require('gulp-typescript')
-    const gulpClean = require('gulp-clean')
-
     const sourceSetDisplayName = sourceSetName[0].toUpperCase() + sourceSetName.substring(1)
     const sourceDisplayName = sourceName[0].toUpperCase() + sourceName.substring(1)
 
@@ -55,13 +52,13 @@ suites.typescript = ([sourceSetName, sourceSet], [sourceName, source]) => {
     const compileTask = createFunction({
         [compileTaskName]: () =>
             gulp.src(source.input, {allowEmpty: true})
-                .pipe(gulpTypescript.createProject(source.tsconfig)())
+                .pipe(require('gulp-typescript').createProject(source.tsconfig)())
                 .pipe(gulp.dest(source.output))
     })
     const cleanTask = createFunction({
         [cleanTaskName]: () =>
             gulp.src(source.output, {allowEmpty: true})
-                .pipe(gulpClean({read: false, force: true}))
+                .pipe(require('gulp-clean')({read: false, force: true}))
     })
     const watchTask = createFunction({
         [watchTaskName]: () =>
@@ -78,9 +75,6 @@ suites.typescript = ([sourceSetName, sourceSet], [sourceName, source]) => {
     ]
 }
 suites.sass = ([sourceSetName, sourceSet], [sourceName, source]) => {
-    const gulpSass = require('gulp-sass')(require('sass'))
-    const gulpClean = require('gulp-clean')
-
     const sourceSetDisplayName = sourceSetName[0].toUpperCase() + sourceSetName.substring(1)
     const sourceDisplayName = sourceName[0].toUpperCase() + sourceName.substring(1)
 
@@ -89,15 +83,18 @@ suites.sass = ([sourceSetName, sourceSet], [sourceName, source]) => {
     const watchTaskName = `watch${sourceSetDisplayName}${sourceDisplayName}`
 
     const compileTask = createFunction({
-        [compileTaskName]: () =>
-            gulp.src(source.input, {allowEmpty: true})
+        [compileTaskName]: () => {
+            const gulpSass = require('gulp-sass')(require('sass'))
+
+            return gulp.src(source.input, {allowEmpty: true})
                 .pipe(gulpSass().on('error', gulpSass.logError))
                 .pipe(gulp.dest(source.output))
+        }
     })
     const cleanTask = createFunction({
         [cleanTaskName]: () =>
             gulp.src(source.output, {allowEmpty: true})
-                .pipe(gulpClean({read: false, force: true}))
+                .pipe(require('gulp-clean')({read: false, force: true}))
     })
     const watchTask = createFunction({
         [watchTaskName]: () =>
@@ -114,8 +111,6 @@ suites.sass = ([sourceSetName, sourceSet], [sourceName, source]) => {
     ]
 }
 suites.bundle = ([sourceSetName, sourceSet], [sourceName, source]) => {
-    const gulpClean = require('gulp-clean')
-
     const sourceSetDisplayName = sourceSetName[0].toUpperCase() + sourceSetName.substring(1)
     const sourceDisplayName = sourceName[0].toUpperCase() + sourceName.substring(1)
 
@@ -131,7 +126,7 @@ suites.bundle = ([sourceSetName, sourceSet], [sourceName, source]) => {
     const cleanTask = createFunction({
         [cleanTaskName]: () =>
             gulp.src(source.output, {allowEmpty: true})
-                .pipe(gulpClean({read: false, force: true}))
+                .pipe(require('gulp-clean')({read: false, force: true}))
     })
     const watchTask = createFunction({
         [watchTaskName]: () =>
