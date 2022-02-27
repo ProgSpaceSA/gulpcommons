@@ -83,18 +83,18 @@ const gulpcommons = require('gulpcommons')
 // first define the sources
 gulpcommons.sources.mySourceSet = {
     myTypescript: {
-        type: 'typescript',
+        type: gulpcommons.suites.typescript,
         input: './src/my-source-set/my-typescript/**/*.ts',
         output: './build/my-source-set/my-typescript',
         tsconfig: './src/my-source-set/my-typescript/tsconfig.json'
     },
     mySass: {
-        type: 'sass',
+        type: gulpcommons.suites.sass,
         input: './src/my-source-set/my-sass/**/*.sass',
         output: './build/my-source-set/my-sass'
     },
     myBundle: {
-        type: 'bundle',
+        type: gulpcommons.suites.bundle,
         input: './src/my-source-set/my-bundle/**/*.*',
         output: './build/my-source-set/my-bundle'
     }
@@ -109,20 +109,20 @@ gulpcommons.install()
 // finally add them to the build, clean and watch tasks
 gulp.task('build', gulp.parallel(
     /* ... */
-    gulpcommons.tasks.compileMySourceSetMyTypescript,
-    gulpcommons.tasks.compileMySourceSetMySass,
-    gulpcommons.tasks.bundleMySourceSetMyBundle,
+    gulpcommons.compileMySourceSetMyTypescript,
+    gulpcommons.compileMySourceSetMySass,
+    gulpcommons.bundleMySourceSetMyBundle,
 ))
 gulp.task('clean', gulp.parallel(
     /* ... */
-    gulpcommons.tasks.cleanMySourceSetMyTypescript,
-    gulpcommons.tasks.cleanMySourceSetMySass,
-    gulpcommons.tasks.cleanMySourceSetMyBundle,
+    gulpcommons.cleanMySourceSetMyTypescript,
+    gulpcommons.cleanMySourceSetMySass,
+    gulpcommons.cleanMySourceSetMyBundle,
 ))
 gulp.task('watch', gulp.series('clean', 'build', gulp.parallel(
     /* ... */
-    gulpcommons.tasks.watchMySourceSetMyTypescript,
-    gulpcommons.tasks.watchMySourceSetMySass,
-    gulpcommons.tasks.watchMySourceSetMyBundle,
+    gulpcommons.watchMySourceSetMyTypescript,
+    gulpcommons.watchMySourceSetMySass,
+    gulpcommons.watchMySourceSetMyBundle,
 )))
 ```
