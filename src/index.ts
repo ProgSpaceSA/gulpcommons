@@ -152,8 +152,8 @@ sources.main = {
     },
     resources: {
         suite: suites.bundle,
-        input: ['./src/main/res/**/*.*'],
-        output: './build/bundle/main/res',
+        input: ['./src/main/resources/**/*.*'],
+        output: './build/bundle/main/resources',
     }
 }
 sources.test = {
@@ -165,8 +165,8 @@ sources.test = {
     },
     resources: {
         suite: suites.bundle,
-        input: ['./src/test/res/**/*.*'],
-        output: './build/bundle/test/res/**/*.*',
+        input: ['./src/test/resources/**/*.*'],
+        output: './build/bundle/test/resources/**/*.*',
     }
 }
 sources.client = {
